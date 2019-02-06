@@ -1,0 +1,194 @@
+/*Programmer: Seanna Marie
+This simple program is designed to help spa users determine the cost of services, obtain a recipt with total and suggeted gratuity*/
+
+#include <iostream>
+#include<string>
+#include<fstream>
+#include<iomanip>
+
+using namespace std;
+
+double gratuity(double);
+
+
+int main() {
+
+//variable initilization
+  string name;
+  char upgrade;
+  const int size=5;
+  int choice;
+  char entry;
+
+//arrays contaning nail services and prices
+  string nails[size]= {"Manicure","Full Set","Fill In","Nail Fix","Removal"};
+  double nailPrices[size]= {12.00, 20.00, 10.00, 5.00, 7.00};
+
+//arrays containing waxing services and prices
+  string waxing[size]= {"Eyebrow","Upper Lip","Full Chin","Full Face","Underarm"};
+  double waxPrices[size]= {12.00, 7.00, 8.00, 30.00, 18.00};
+
+//arrays containing massage services and prices
+  string massage[size]={"10 Minutes", "15 Minutes", "30 Minutes",
+                            "45 minutes", "60 Minutes"};
+  double massagePrices[size]= {10.00, 15.00, 25.00, 30.00, 40.00};
+
+
+  
+
+  double finalTotal;
+
+  cout<<"Welcome to The Sparkle Spa.\n";
+  cout<<"What is your name?\n";
+  cin>> name;                       //gain name from user input
+
+  
+
+    cout<<"Which nail service would you like?\n";
+    cout<<"-------------------------------------\n";
+
+    for(int count= 0; count<size;count++)   //for loop used to display array elements
+    {
+      cout<<(count+1)<<"."<< nails[count]<< "\t\t\t\t\t";
+      cout<< "$"<< nailPrices[count]<<endl;
+    }
+    cout<<"Key in selection(1-5): ";
+    cin>>choice;
+
+      switch(choice)  //switch statment to help with choices
+      {
+
+      case 1: 
+      cout<<"You have selected a Manicure.\n";
+      finalTotal= nailPrices[0];
+      break;
+
+      case 2: 
+      cout<<"You have selected a Full Set.\n";
+      finalTotal= nailPrices[1];
+      break;
+
+      case 3: 
+      cout<<"You have selected a Fill.\n";
+      finalTotal= nailPrices[2];
+      break;
+
+      case 4: 
+      cout<<"You have selected a Polish Change.\n";
+      finalTotal= nailPrices[3];
+      break;
+
+      case 5: 
+      cout<<"You have selected a Removal.\n";
+      finalTotal= nailPrices[4];
+      break;
+     
+      default:
+      cout<<"Please make a valid selection.\n";
+      }
+
+    cout<<"Would you like to upgrade your nail service?\n";
+    cout<<"Please enter Y or N\n";
+    cin>> upgrade;
+
+    if(upgrade=='y'|| upgrade=='Y')
+    {
+      cout<<"You have decided to go with an upgrade, your options are:\n";
+      cout<<"-------------------------------------";
+      cout<<"-------------------------------------\n";
+      cout<<"1.Waxing\n2.Massage\n";
+
+      
+        //This loop ensures the menu is displayed at least one time
+      do
+      {
+        cout<<"Key in selection(1-2): ";
+        cin>>choice;
+
+        switch(choice)
+        {
+          
+          case 1:
+
+          do{
+            cout<<"You'd like to add waxing. Your options are:\n";
+            cout<<"--------------------------------------------\n";
+            
+            for(int count= 0; count<size;count++)
+              {
+                cout<<(count+1)<<"."<< waxing[count]<< "\t\t";
+                cout<< "$"<< waxPrices[count]<<endl;
+              } 
+              
+              cout<<"Which service would you like to add?\n";
+              cout<<"Key in selection(1-5): ";
+              cin>>choice;
+              finalTotal+= waxPrices[choice-1];
+
+              cout<<"Would you like additional waxing services?\n";
+              cout<<"Enter Y or N: ";
+              cin>>entry;
+          }while(entry== 'y'|| entry== 'Y');
+
+              break; 
+
+
+          case 2: 
+            cout<<"You'd like to add a Massage. Your Options are:\n";
+            cout<<"-------------------------------------------\n";
+            for(int count= 0; count<size;count++)
+              {
+                cout<<(count+1)<<"."<< massage[count]<< "\t\t";
+                cout<< massagePrices[count]<<endl;
+              }    
+              cout<<"Which service would you like to add?\n";
+              cout<<"Key in selection(1-5): ";
+              cin>>choice;
+              finalTotal+= massagePrices[choice-1];
+          break;
+
+          default:
+          cout<<"Please make a valid selection.\n";
+    
+        }
+      } while (choice!=1 && choice != 2);
+    }
+
+
+if(finalTotal>0)
+cout<<"Thank you for visiting the Sparkle Spa.\n";
+cout<<"You can find the summary of your visit on your reciept.\n";
+  
+
+
+	// Output to reciept
+
+	ofstream outputFile;
+	outputFile.open("CustomerReciept.txt");
+
+
+
+	outputFile << fixed << setprecision(2) << showpoint;
+	outputFile << "Thank you "<< name;
+  outputFile << " for visiting The Sparkle Spa.\n";
+	outputFile << "We Hope you left feeling beautiful.\n";
+  outputFile << "Your amazing service today costs: $";
+ outputFile << finalTotal<<endl;
+ outputFile << "We suggest giving your technician a gratuity of $";
+ outputFile << gratuity(finalTotal);
+
+	outputFile.close();
+
+
+
+
+  
+ 
+return 0;
+
+}
+//This function is used to calculate the price of gratuity
+double gratuity (double arg1)
+{
+    return (arg1*0.2);
+}
