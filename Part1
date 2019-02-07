@@ -191,4 +191,4 @@ return 0;
 double gratuity (double arg1)
 {
     return (arg1*0.2);
-}
+} 
